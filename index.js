@@ -69,11 +69,9 @@ class Tree {
     } else if (value > node.data) {
       node.right = this.deleteNode(node.right, value);
     } else {
-      // Case 1: Node to delete has no children
       if (!node.left && !node.right) {
         return null;
       }
-      // Case 2: Node to delete has only one child
       if (!node.left) {
         return node.right;
       }
