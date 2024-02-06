@@ -55,6 +55,45 @@ class Tree {
       }
     }
   }
+  delete(value) {
+    this.root = this.deleteNode(this.root, value);
+  }
+
+  deleteNode(node, value) {
+    if (!node) {
+      return null;
+    }
+
+    if (value < node.data) {
+      node.left = this.deleteNode(node.left, value);
+    } else if (value > node.data) {
+      node.right = this.deleteNode(node.right, value);
+    } else {
+      // Case 1: Node to delete has no children
+      if (!node.left && !node.right) {
+        return null;
+      }
+      // Case 2: Node to delete has only one child
+      if (!node.left) {
+        return node.right;
+      }
+      if (!node.right) {
+        return node.left;
+      }
+      let minNode = this.findMinNode(node.right);
+      node.data = minNode.data;
+
+      node.right = this.deleteNode(node.right, minNode.data);
+    }
+    return node;
+  }
+
+  findMinNode(node) {
+    while (node && node.left) {
+      node = node.left;
+    }
+    return node;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -74,5 +113,4 @@ const arr = [1, 2, 3, 56, 56, 56, 4, 5, 6, 8, 9];
 const newTree = new Tree();
 newTree.buildTree(arr);
 const myNode = newTree.root;
-newTree.insert("7");
 prettyPrint(myNode);
