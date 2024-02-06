@@ -5,25 +5,58 @@ class Node {
     this.right = null;
   }
 }
+
 class Tree {
-  constructor(array) {
-    this.array = array;
-  }
-  cleanArray() {
-    return [...new Set(this.array.sort((a, b) => a - b))];
+  constructor() {
+    this.root = null;
   }
 
-  buildTree(arr, start, end = arr.length) {
+  buildTree(arr) {
+    if (arr.length === 0) {
+      return null;
+    }
+    arr = [...new Set(arr.sort((a, b) => a - b))];
+    this.root = this.buildTreeRecursive(arr, 0, arr.length - 1);
+  }
+
+  buildTreeRecursive(arr, start, end) {
     if (start > end) {
       return null;
     }
-    let mid = parseInt((start + end) / 2);
+    let mid = Math.floor((start + end) / 2);
     let node = new Node(arr[mid]);
-    node.left = this.buildTree(arr, start, mid - 1);
-    node.right = this.buildTree(arr, mid + 1, end);
+    node.left = this.buildTreeRecursive(arr, start, mid - 1);
+    node.right = this.buildTreeRecursive(arr, mid + 1, end);
     return node;
   }
+
+  insert(value) {
+    if (!this.root) {
+      this.root = new Node(value);
+      return;
+    }
+    let ref = this.root;
+    let newNode = new Node(value);
+    while (true) {
+      if (value < ref.data) {
+        if (!ref.left) {
+          ref.left = newNode;
+          break;
+        }
+        ref = ref.left;
+      } else if (value > ref.data) {
+        if (!ref.right) {
+          ref.right = newNode;
+          break;
+        }
+        ref = ref.right;
+      } else {
+        break;
+      }
+    }
+  }
 }
+
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
@@ -36,8 +69,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 };
-const arr = [1, 2, 3, 56, 56, 4, 5, 6, 7, 8, 9];
-const newTree = new Tree(arr);
-const myNode = newTree.buildTree(newTree.cleanArray(), 0);
-console.log(myNode);
+
+const arr = [1, 2, 3, 56, 56, 56, 4, 5, 6, 8, 9];
+const newTree = new Tree();
+newTree.buildTree(arr);
+const myNode = newTree.root;
+newTree.insert("7");
 prettyPrint(myNode);
