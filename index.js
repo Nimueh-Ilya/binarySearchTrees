@@ -92,6 +92,46 @@ class Tree {
     }
     return node;
   }
+  find(value, node = this.root) {
+    if (!node) {
+      return null;
+    }
+
+    if (node.data === value) {
+      return node;
+    } else if (value < node.data) {
+      return this.find(value, node.left);
+    } else {
+      return this.find(value, node.right);
+    }
+  }
+  levelOrder(callback) {
+    if (!this.root) {
+      return;
+    }
+
+    let queue = [this.root];
+    let answer = [];
+
+    while (queue.length > 0) {
+      let node = queue.shift();
+
+      if (!callback) {
+        answer.push(node.data);
+      } else {
+        answer.push(callback(node.data));
+      }
+
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);
+      }
+    }
+
+    return answer;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -111,4 +151,9 @@ const arr = [1, 2, 3, 56, 56, 56, 4, 5, 6, 8, 9];
 const newTree = new Tree();
 newTree.buildTree(arr);
 const myNode = newTree.root;
+console.log(myNode);
 prettyPrint(myNode);
+function timesFive(val) {
+  return val * 5;
+}
+console.log(newTree.levelOrder(timesFive));
