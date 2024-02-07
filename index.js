@@ -132,6 +132,25 @@ class Tree {
 
     return answer;
   }
+  preorder(callback, node = this.root) {
+    let answer = [];
+    if (!node) {
+      return answer;
+    }
+    if (!callback) {
+      answer.push(node.data);
+    } else {
+      answer.push(callback(node.data));
+    }
+    if (node.right) {
+      answer = answer.concat(this.preorder(callback, node.right));
+    }
+    if (node.left) {
+      answer = answer.concat(this.preorder(callback, node.left));
+    }
+
+    return answer;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -153,7 +172,4 @@ newTree.buildTree(arr);
 const myNode = newTree.root;
 console.log(myNode);
 prettyPrint(myNode);
-function timesFive(val) {
-  return val * 5;
-}
-console.log(newTree.levelOrder(timesFive));
+console.log(newTree.preorder());
