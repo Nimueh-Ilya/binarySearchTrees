@@ -132,7 +132,7 @@ class Tree {
 
     return answer;
   }
-  preorder(callback, node = this.root) {
+  inorder(callback, node = this.root) {
     let answer = [];
     if (!node) {
       return answer;
@@ -143,10 +143,47 @@ class Tree {
       answer.push(callback(node.data));
     }
     if (node.right) {
-      answer = answer.concat(this.preorder(callback, node.right));
+      answer = answer.concat(this.inorder(callback, node.right));
+    }
+    if (node.left) {
+      answer = answer.concat(this.inorder(callback, node.left));
+    }
+
+    return answer;
+  }
+  preorder(callback, node = this.root) {
+    let answer = [];
+    if (!node) {
+      return;
     }
     if (node.left) {
       answer = answer.concat(this.preorder(callback, node.left));
+    }
+    if (!callback) {
+      answer.push(node.data);
+    } else {
+      answer.push(callback(node.data));
+    }
+    if (node.right) {
+      answer = answer.concat(this.preorder(callback, node.right));
+    }
+    return answer;
+  }
+  postorder(callback, node = this.root) {
+    let answer = [];
+    if (!node) {
+      return;
+    }
+    if (node.right) {
+      answer = answer.concat(this.postorder(callback, node.right));
+    }
+    if (!callback) {
+      answer.push(node.data);
+    } else {
+      answer.push(callback(node.data));
+    }
+    if (node.left) {
+      answer = answer.concat(this.postorder(callback, node.left));
     }
 
     return answer;
@@ -172,4 +209,4 @@ newTree.buildTree(arr);
 const myNode = newTree.root;
 console.log(myNode);
 prettyPrint(myNode);
-console.log(newTree.preorder());
+console.log(newTree.postorder());
