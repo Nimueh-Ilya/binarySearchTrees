@@ -188,6 +188,32 @@ class Tree {
 
     return answer;
   }
+  height(node = this.root) {
+    if (!node) {
+      return 0;
+    }
+
+    const leftHeight = this.height(node.left);
+    const rightHeight = this.height(node.right);
+
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+  depth(value, node = this.root) {
+    let depthVal = 0;
+    if (!node) {
+      return null;
+    }
+    if (node.data == value) {
+      return depthVal + 1;
+    }
+    if (node.data > value) {
+      return (depthVal = depthVal + this.depth(value, node.left) + 1);
+    }
+    if (node.data < value) {
+      return (depthVal = depthVal + this.depth(value, node.right) + 1);
+    }
+    return depthVal;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -209,4 +235,4 @@ newTree.buildTree(arr);
 const myNode = newTree.root;
 console.log(myNode);
 prettyPrint(myNode);
-console.log(newTree.postorder());
+console.log(newTree.depth(56));
