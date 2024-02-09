@@ -222,6 +222,17 @@ class Tree {
     const leftHeight = this.height(this.root.left);
     return Math.abs(rightHeight - leftHeight) > 1 ? false : true;
   }
+  rebalance() {
+    if (!this.root) {
+      return null;
+    }
+    if (this.isbalanced()) {
+      return this.root;
+    } else {
+      const newArray = this.inorder();
+      return this.buildTree(newArray);
+    }
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -236,11 +247,26 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 };
+function randomArray(size) {
+  return [...Array(size)].map((e) => ~~(Math.random() * 100));
+}
 
-const arr = [1, 2, 3, 56, 56, 56, 4, 5, 6, 8, 9];
 const newTree = new Tree();
-newTree.buildTree(arr);
+newTree.buildTree(randomArray(20));
 const myNode = newTree.root;
-console.log(myNode);
 prettyPrint(myNode);
 console.log(newTree.isbalanced());
+console.log(newTree.levelOrder());
+console.log(newTree.inorder());
+console.log(newTree.preorder());
+console.log(newTree.postorder());
+newTree.insert(100);
+newTree.insert(101);
+newTree.insert(258);
+console.log(newTree.isbalanced());
+newTree.rebalance();
+console.log(newTree.isbalanced());
+console.log(newTree.levelOrder());
+console.log(newTree.inorder());
+console.log(newTree.preorder());
+console.log(newTree.postorder());
