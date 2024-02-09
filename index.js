@@ -214,6 +214,14 @@ class Tree {
     }
     return depthVal;
   }
+  isbalanced() {
+    if (!this.root) {
+      return "empty";
+    }
+    const rightHeight = this.height(this.root.right);
+    const leftHeight = this.height(this.root.left);
+    return Math.abs(rightHeight - leftHeight) > 1 ? false : true;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -235,4 +243,4 @@ newTree.buildTree(arr);
 const myNode = newTree.root;
 console.log(myNode);
 prettyPrint(myNode);
-console.log(newTree.depth(56));
+console.log(newTree.isbalanced());
